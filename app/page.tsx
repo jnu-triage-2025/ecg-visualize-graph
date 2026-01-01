@@ -1,8 +1,35 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { Activity, Settings, RefreshCw, Heart, AlertCircle } from 'lucide-react';
+
+type EcgParams = {
+  bpm: number;
+  pAmp: number;
+  pWidth: number;
+  qAmp: number;
+  rAmp: number;
+  sAmp: number;
+  tAmp: number;
+  tWidth: number;
+  uAmp: number;
+  noise: number;
+  irregularity: number;
+  stElevation: number;
+  qrsWidthScale?: number;
+};
+
+type Preset = {
+  label: string;
+  description: string;
+  params: EcgParams;
+};
+
+type EcgPoint = {
+  time: string;
+  voltage: number;
+};
 
 /**
  * 가우스 함수 (Gaussian Function)
@@ -12,13 +39,18 @@ import { Activity, Settings, RefreshCw, Heart, AlertCircle } from 'lucide-react'
  * @param {number} amp - 파형의 진폭 (Amplitude)
  * @param {number} width - 파형의 너비 (Standard Deviation)
  */
-const gaussian = (t, center, amp, width) => {
+const gaussian = (t: number, center: number, amp: number, width: number): number => {
   if (width === 0) return 0;
   return amp * Math.exp(-Math.pow(t - center, 2) / (2 * width * width));
 };
 
+const formatVoltageTooltip = (value: number | string | undefined) => {
+  const numericValue = typeof value === 'number' ? value : Number(value ?? 0);
+  return [`${numericValue.toFixed(3)} mV`, 'Voltage'] as const;
+};
+
 // 문서 내용을 바탕으로 한 프리셋 설정
-const PRESETS = {
+const PRESETS: Record<string, Preset> = {
   NORMAL: {
     label: "정상 동성 리듬 (Normal Sinus Rhythm)",
     description: "규칙적인 P-QRS-T 파형. 심박수 60-100bpm.",
@@ -76,10 +108,12 @@ const PRESETS = {
   }
 };
 
+type PresetKey = keyof typeof PRESETS;
+
 export default function ECGSimulator() {
-  const [selectedPreset, setSelectedPreset] = useState('NORMAL');
-  const [params, setParams] = useState(PRESETS.NORMAL.params);
-  const [data, setData] = useState([]);
+  const [selectedPreset, setSelectedPreset] = useState<PresetKey>('NORMAL');
+  const [params, setParams] = useState<EcgParams>(PRESETS.NORMAL.params);
+  const [data, setData] = useState<EcgPoint[]>([]);
   const [duration] = useState(4); // 4초 동안의 데이터
 
   // 프리셋 변경 시 파라미터 업데이트
@@ -88,8 +122,9 @@ export default function ECGSimulator() {
   }, [selectedPreset]);
 
   // 파라미터 변경 핸들러
-  const handleParamChange = (key, value) => {
-    setParams(prev => ({ ...prev, [key]: parseFloat(value) }));
+  const handleParamChange = (key: keyof EcgParams, value: number | string) => {
+    const parsed = typeof value === 'number' ? value : parseFloat(value);
+    setParams(prev => ({ ...prev, [key]: parsed }));
   };
 
   // ECG 데이터 생성 로직
@@ -97,13 +132,13 @@ export default function ECGSimulator() {
     const generateData = () => {
       const samplingRate = 100; // Hz
       const totalPoints = duration * samplingRate;
-      const newData = [];
+      const newData: EcgPoint[] = [];
       
       // 심박수(BPM)를 기반으로 비트 간격 계산 (초 단위)
       // 불규칙성(irregularity)이 있으면 간격이 랜덤하게 변함
       const baseInterval = params.bpm > 0 ? 60 / params.bpm : Infinity;
       
-      let beatTimes = [];
+      let beatTimes: number[] = [];
       let currentTime = 0.2; // 첫 비트 시작점
       
       // 비트 발생 시간 미리 계산
@@ -217,7 +252,7 @@ export default function ECGSimulator() {
             <Tooltip 
               contentStyle={{ backgroundColor: '#1f2937', border: 'none', color: '#fff' }}
               labelStyle={{ color: '#9ca3af' }}
-              formatter={(value) => [value.toFixed(3) + ' mV', 'Voltage']}
+              formatter={formatVoltageTooltip}
             />
             <Line 
               type="monotone" 
