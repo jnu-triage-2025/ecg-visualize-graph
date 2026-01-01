@@ -20,17 +20,22 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Deploy to GitHub Pages
 
-To learn more about Next.js, take a look at the following resources:
+This project is set up to export static assets and publish them to GitHub Pages.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Automatic (recommended)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Ensure your default branch is `main` or `master`.
+2. Push to GitHub. The workflow `.github/workflows/deploy.yml` will build, export, and deploy the site to the `gh-pages` environment.
+3. In your repository settings, enable GitHub Pages to serve from the `gh-pages` branch (GitHub Pages → Source → GitHub Actions).
 
-## Deploy on Vercel
+### Manual
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm install
+NEXT_PUBLIC_GITHUB_PAGES=true pnpm run build
+NEXT_PUBLIC_GITHUB_PAGES=true pnpm run export
+touch out/.nojekyll
+# deploy the contents of ./out to gh-pages
+```
