@@ -43,11 +43,6 @@ jobs:
           NEXT_PUBLIC_GITHUB_PAGES: "true"
         run: pnpm run build
 
-      - name: Export static site
-        env:
-          NEXT_PUBLIC_GITHUB_PAGES: "true"
-        run: pnpm run export
-
       - name: Disable Jekyll
         run: touch out/.nojekyll
 

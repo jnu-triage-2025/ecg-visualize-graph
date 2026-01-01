@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "export": "next export",
-    "deploy": "pnpm run build && pnpm run export && touch out/.nojekyll"
+    "deploy": "pnpm run build && touch out/.nojekyll"
   },
   "dependencies": {
     "lucide-react": "^0.562.0",

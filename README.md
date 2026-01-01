@@ -35,7 +35,6 @@ This project is set up to export static assets and publish them to GitHub Pages.
 ```bash
 pnpm install
 NEXT_PUBLIC_GITHUB_PAGES=true pnpm run build
-NEXT_PUBLIC_GITHUB_PAGES=true pnpm run export
 touch out/.nojekyll
 # deploy the contents of ./out to gh-pages
 ```
