@@ -230,9 +230,6 @@ export default function ECGSimulator() {
           <Activity className="text-red-500" />
           심전도(ECG) 수학적 시뮬레이터
         </h1>
-        <p className="text-gray-500 text-sm mt-1">
-          문서 "심전도 - 나무위키"를 기반으로 파형을 수학적으로 생성합니다.
-        </p>
       </div>
 
       {/* 그래프 영역 */}

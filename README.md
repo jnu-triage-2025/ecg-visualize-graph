@@ -27,14 +27,15 @@ This project is set up to export static assets and publish them to GitHub Pages.
 ### Automatic (recommended)
 
 1. Ensure your default branch is `main` or `master`.
-2. Push to GitHub. The workflow `.github/workflows/deploy.yml` will build, export, and deploy the site to the `gh-pages` environment.
-3. In your repository settings, enable GitHub Pages to serve from the `gh-pages` branch (GitHub Pages → Source → GitHub Actions).
+2. Set the repository base path in the workflow (env `NEXT_PUBLIC_BASE_PATH`). It is currently `ecg-visualize-graph`.
+3. Push to GitHub. The workflow `.github/workflows/deploy.yml` will build, export, and deploy the site to the `gh-pages` environment.
+4. In your repository settings, enable GitHub Pages to serve from the `gh-pages` branch (GitHub Pages → Source → GitHub Actions).
 
 ### Manual
 
 ```bash
 pnpm install
-NEXT_PUBLIC_GITHUB_PAGES=true pnpm run build
+NEXT_PUBLIC_GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=ecg-visualize-graph pnpm run build
 touch out/.nojekyll
 # deploy the contents of ./out to gh-pages
 ```

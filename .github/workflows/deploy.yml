@@ -41,6 +41,7 @@ jobs:
       - name: Build
         env:
           NEXT_PUBLIC_GITHUB_PAGES: "true"
+          NEXT_PUBLIC_BASE_PATH: "ecg-visualize-graph"
         run: pnpm run build
 
       - name: Disable Jekyll
