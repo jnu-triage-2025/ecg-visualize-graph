@@ -41,7 +41,7 @@ jobs:
       - name: Build
         env:
           NEXT_PUBLIC_GITHUB_PAGES: "true"
-          NEXT_PUBLIC_BASE_PATH: "ecg-visualize-graph"
+          NEXT_PUBLIC_BASE_PATH: "patient-monitor-graphs"
         run: pnpm run build
 
       - name: Disable Jekyll
