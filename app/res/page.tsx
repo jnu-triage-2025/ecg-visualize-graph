@@ -379,7 +379,13 @@ export default function VentilatorGraphics() {
                         <LineChart data={scalars}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                             <YAxis domain={[0, 40]} hide />
-                            <Tooltip labelFormatter={() => ''} formatter={(value) => [`${value.toFixed(1)} cmH2O`, 'Pressure']} />
+                            <Tooltip
+                              labelFormatter={() => ''}
+                              formatter={(value) => {
+                                const num = typeof value === 'number' ? value : Number(value ?? 0);
+                                return [`${num.toFixed(1)} cmH2O`, 'Pressure'];
+                              }}
+                            />
                             <Line type="monotone" dataKey="pressure" stroke="#fbbf24" strokeWidth={2} dot={false} isAnimationActive={false} />
                         </LineChart>
                     </ResponsiveContainer>
@@ -392,7 +398,13 @@ export default function VentilatorGraphics() {
                         <LineChart data={scalars}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                             <YAxis domain={[-60, 60]} hide />
-                            <Tooltip labelFormatter={() => ''} formatter={(value) => [`${value.toFixed(1)} L/min`, 'Flow']} />
+                            <Tooltip
+                              labelFormatter={() => ''}
+                              formatter={(value) => {
+                                const num = typeof value === 'number' ? value : Number(value ?? 0);
+                                return [`${num.toFixed(1)} L/min`, 'Flow'];
+                              }}
+                            />
                             <Line type="monotone" dataKey="flow" stroke="#22c55e" strokeWidth={2} dot={false} isAnimationActive={false} />
                             {/* Baseline */}
                             <Line type="monotone" dataKey={() => 0} stroke="#9ca3af" strokeDasharray="3 3" dot={false} strokeWidth={1} />
@@ -407,7 +419,13 @@ export default function VentilatorGraphics() {
                         <LineChart data={scalars}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                             <YAxis domain={[0, 800]} hide />
-                            <Tooltip labelFormatter={() => ''} formatter={(value) => [`${value.toFixed(0)} mL`, 'Volume']} />
+                            <Tooltip
+                              labelFormatter={() => ''}
+                              formatter={(value) => {
+                                const num = typeof value === 'number' ? value : Number(value ?? 0);
+                                return [`${num.toFixed(0)} mL`, 'Volume'];
+                              }}
+                            />
                             <Line type="monotone" dataKey="volume" stroke="#3b82f6" strokeWidth={2} dot={false} isAnimationActive={false} />
                         </LineChart>
                     </ResponsiveContainer>
@@ -427,7 +445,14 @@ export default function VentilatorGraphics() {
                             <XAxis type="number" dataKey="pressure" name="Pressure" unit="cmH2O" domain={[0, 40]} />
                             <YAxis type="number" dataKey="volume" name="Volume" unit="mL" domain={[0, 800]} />
                             <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                            <Scatter name="PV Loop" data={loops} fill="#8884d8" line={{ stroke: '#3b82f6', strokeWidth: 2 }} shape={() => null} isAnimationActive={false} />
+                            <Scatter
+                              name="PV Loop"
+                              data={loops}
+                              fill="#8884d8"
+                              line={{ stroke: '#3b82f6', strokeWidth: 2 }}
+                              shape={() => <></>}
+                              isAnimationActive={false}
+                            />
                         </ScatterChart>
                     </ResponsiveContainer>
                     {params.overdistension && <div className="absolute top-1/4 right-1/4 text-xs text-red-500 font-bold bg-white/80 px-1">Beak (Overdistension)</div>}
@@ -443,7 +468,14 @@ export default function VentilatorGraphics() {
                             <XAxis type="number" dataKey="volume" name="Volume" unit="mL" domain={[0, 800]} />
                             <YAxis type="number" dataKey="flow" name="Flow" unit="L/min" domain={[-60, 60]} />
                             <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                            <Scatter name="FV Loop" data={loops} fill="#8884d8" line={{ stroke: '#22c55e', strokeWidth: 2 }} shape={() => null} isAnimationActive={false} />
+                            <Scatter
+                              name="FV Loop"
+                              data={loops}
+                              fill="#8884d8"
+                              line={{ stroke: '#22c55e', strokeWidth: 2 }}
+                              shape={() => <></>}
+                              isAnimationActive={false}
+                            />
                         </ScatterChart>
                     </ResponsiveContainer>
                     {params.resistance > 30 && <div className="absolute bottom-1/4 left-1/3 text-xs text-orange-500 font-bold bg-white/80 px-1">Scooped (Obstruction)</div>}
